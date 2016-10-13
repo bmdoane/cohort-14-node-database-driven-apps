@@ -10,7 +10,6 @@ SELECT Customer.FirstName || " " || Customer.LastName AS "Full Name", Customer.C
 FROM Customer
 WHERE Customer.Country = "Brazil";
 
-
 3. Provide a query showing the Invoices of customers who are from Brazil. The resultant table should show the customer's full name, Invoice ID, Date of the invoice and billing country.
 
 SELECT Customer.FirstName || " " || Customer.LastName AS "Full Name", Invoice.InvoiceId, Invoice.InvoiceDate, Invoice.BillingCountry 
@@ -99,21 +98,47 @@ GROUP BY BillingCountry
 
 15. Provide a query that shows the total number of tracks in each playlist. The Playlist name should be include on the resultant table.
 
-
+SELECT Playlist.Name, COUNT(PlaylistTrack.Trackid) AS "Track Count"
+FROM Playlist
+INNER JOIN PlaylistTrack ON PlaylistTrack.PlaylistId = Playlist.PlaylistId
+GROUP BY Playlist.Name
 
 16. Provide a query that shows all the Tracks, but displays no IDs. The resultant table should include the Album name, Media type and Genre.
 
-Left Join
+SELECT Track.Name AS "Track Name", Album.Title AS "Album", MediaType.Name AS "Media Type", Genre.Name AS "Genre"
+FROM Track
+INNER JOIN Album ON Album.AlbumId = Track.AlbumId
+INNER JOIN Genre ON Track.GenreId = Genre.GenreId
+INNER JOIN MediaType ON Track.MediaTypeId = Genre.GenreId
 
 17. Provide a query that shows all Invoices but includes the # of invoice line items.
 
+SELECT Invoice.*, COUNT(InvoiceLine.InvoiceLineId) AS "Line Item #'s"
+FROM Invoice
+INNER JOIN InvoiceLine ON Invoice.InvoiceId = InvoiceLine.InvoiceId
+GROUP BY Invoice.InvoiceId
+
 18. Provide a query that shows total sales made by each sales agent.
 
+SELECT Employee.FirstName || " " || Employee.LastName AS "Sales Agent", SUM(Invoice.Total) AS "Total Sales"
+FROM Invoice
+INNER JOIN Customer ON Invoice.CustomerId = Customer.CustomerId
+INNER JOIN Employee ON Employee.EmployeeId = Customer.SupportRepId
+GROUP BY Employee.EmployeeId
+
 19. Which sales agent made the most in sales in 2009?
+
+
 
 20. Which sales agent made the most in sales in 2010?
 
 21. Which sales agent made the most in sales over all?
+
+SELECT Employee.FirstName || " " || Employee.LastName AS "Sales Agent", SUM(Invoice.Total) AS "Total Sales"
+FROM Invoice
+INNER JOIN Customer ON Invoice.CustomerId = Customer.CustomerId
+INNER JOIN Employee ON Customer.SupportRepId = Employee.EmployeeId
+GROUP BY Employee.EmployeeId LIMIT 1
 
 22. Provide a query that shows the # of customers assigned to each sales agent.
 
@@ -126,3 +151,7 @@ Left Join
 26. Provide a query that shows the top 3 best selling artists.
 
 27. Provide a query that shows the most purchased Media Type.
+
+
+
+
